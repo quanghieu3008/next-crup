@@ -34,6 +34,10 @@ const AddStatus = (props) => {
     }
     return (
         <div className="from-add">
+            <div>
+                <Button style={{ marginBottom: "30px" }} variant="secondary" onClick={() => router.push("/")}>
+                    back
+                </Button></div>
             <Form>
                 <Form.Group controlId="exampleForm.ControlInput1">
                     <Form.Label>Title </Form.Label>
