@@ -119,8 +119,8 @@ const Home = ({ student }) => {
             <tr key={keys} onClick={() => setViewHandle(items)}>
 
                 <td><a href="#"> {items.title}</a>
-                    <td>{items.date}</td>
                 </td>
+                <td>{items.date}</td>
 
             </tr >
         )
@@ -140,7 +140,8 @@ const Home = ({ student }) => {
                     <Table className={dataCheck ? "table-style-true" : "table-style-false"} striped bordered hover size="50" >
                         <thead>
                             <tr>
-                                <th><Button variant="info" onClick={() => { router.push("/add", undefined, { shallow: true }) }} > Add</Button></th>
+                                <th colSpan="2"><Button variant="info" onClick={() => { router.push("/add", undefined, { shallow: true }) }} > Add</Button></th>
+
                             </tr>
                         </thead>
                         <tbody>
