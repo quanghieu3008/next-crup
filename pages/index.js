@@ -3,7 +3,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import { fetchposts, deleteAction } from '../store/actions/postAction';
 import apiRequest from './api/actionsAPI';
 import { useRouter } from "next/router";
-import { Table, Card, Button, Modal, Alert } from 'react-bootstrap';
+import { Table, Card, Button, Modal } from 'react-bootstrap';
 import { useAuth0 } from "@auth0/auth0-react";
 import 'antd/dist/antd.css';
 import Comfirm from './header/comfirm';
@@ -21,8 +21,17 @@ const Home = ({ student }) => {
     const { isAuthenticated, isLoading } = useAuth0();
     useEffect(() => {
         setDateA(student)
-        onHandleClick()
+        onHandleClick();
+        Components();
     }, [])
+    const Components = () => {
+
+
+        console.log({ basePath: router.basePath });
+        // { basePath: 'https://www.example.com/docs' }
+
+
+    }
     const onHandleClick = async (pages) => {
         try {
             const newStudent = {
@@ -161,9 +170,14 @@ const Home = ({ student }) => {
         </div>
     )
 }
-Home.getInitialProps = async () => {
-    const res = await fetch('https://5ff2c99828c3980017b189ba.mockapi.io/localhost3001/item/blogs');
-    const json = await res.json();
+Home.getInitialProps = async (context) => {
+    // const { req, query, res, asPath, pathname } = context
+    // if (req) {
+    //     let host = req.headers.host
+    //     console.log(host, "---------------------------");
+    // }
+    const respos = await fetch('https://5ff2c99828c3980017b189ba.mockapi.io/localhost3001/item/blogs');
+    const json = await respos.json();
     return { student: json.items }
 }
 
