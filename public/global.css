@@ -1,4 +1,15 @@
-body {}
+.header-top {
+    height: 3.5rem;
+    background: #34495E;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem;
+}
+
+.not-data {
+    margin: 5rem
+}
 
 .flex-screen {
     display: flex;

@@ -3,8 +3,10 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import { fetchposts, deleteAction } from '../store/actions/postAction';
 import apiRequest from './api/actionsAPI';
 import { useRouter } from "next/router";
-import { Table, Card, Button, Modal } from 'react-bootstrap'
+import { Table, Card, Button, Modal, Alert } from 'react-bootstrap';
+import { useAuth0 } from "@auth0/auth0-react";
 import 'antd/dist/antd.css';
+import Comfirm from './header/comfirm';
 const Home = ({ student }) => {
     const [dateA, setDateA] = useState([])
     const store = useStore();
@@ -16,6 +18,7 @@ const Home = ({ student }) => {
     const dispatch = useDispatch();
     const [showModalComfirm, setShowModalComfirm] = useState(false);
     const [id, setId] = useState();
+    const { isAuthenticated, isLoading } = useAuth0();
     useEffect(() => {
         setDateA(student)
         onHandleClick()
@@ -58,6 +61,12 @@ const Home = ({ student }) => {
     }
     const showCrad = () => {
         const { date, content, title, description, id } = bkCheck || ''
+
+
+        if (isLoading) {
+            return <div>Loading ...</div>;
+        }
+
         return (
             <div className="table-title">
                 <Card className="blog-item" text="black">
@@ -103,39 +112,51 @@ const Home = ({ student }) => {
     const setViewHandle = (items) => {
         setBkCheck(items)
         setDataCheck(true)
+
     }
     const viewHandle = (items, keys) => {
         return (
             <tr key={keys} onClick={() => setViewHandle(items)}>
 
-                <td>{items.title}</td>
+                <td><a href="#"> {items.title}</a>
+                    <td>{items.date}</td>
+                </td>
 
-            </tr>
+            </tr >
         )
     }
-    return (
-        <div className="flex-screen" >
-            {(dataCheck) ?
-                showCrad()
-                : null
-            }
-            <Table className={dataCheck ? "table-style-true" : "table-style-false"} striped bordered hover size="50" >
-                <thead>
-                    <tr>
-                        <th><Button variant="info" onClick={() => { router.push("/add", undefined, { shallow: true }) }} > Add</Button></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        dateA.map((item, key) => {
-                            return (
-                                viewHandle(item, key)
-                            )
-                        })
-                    }
-                </tbody>
-            </Table>
 
+
+
+
+    return (
+        <div>
+            {isAuthenticated ?
+                <div className="flex-screen" hidden={!isAuthenticated}>
+                    {(dataCheck) ?
+                        showCrad()
+                        : null
+                    }
+                    <Table className={dataCheck ? "table-style-true" : "table-style-false"} striped bordered hover size="50" >
+                        <thead>
+                            <tr>
+                                <th><Button variant="info" onClick={() => { router.push("/add", undefined, { shallow: true }) }} > Add</Button></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                dateA.map((item, key) => {
+                                    return (
+                                        viewHandle(item, key)
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </Table>
+                </div>
+                :
+                <Comfirm />
+            }
         </div>
     )
 }

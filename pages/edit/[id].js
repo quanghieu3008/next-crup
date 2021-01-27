@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import apiRequest from '../api/actionsAPI';
 import { Form, Button } from 'react-bootstrap';
 import { updateAction } from '../../store/actions/postAction';
+import { useAuth0 } from "@auth0/auth0-react";
+import Comfirm from '../header/comfirm';
 const EditStatus = ({ student }) => {
     const statusEdit = student
     const today = new Date();
@@ -34,32 +36,37 @@ const EditStatus = ({ student }) => {
             alert("Not empty");
         };
     }
-
+    const { isAuthenticated } = useAuth0();
     return (
-        <div className="from-add">
-            <div>
-                <Button style={{ marginBottom: "30px" }} variant="secondary" onClick={() => router.push("/")}>
-                    back
+        <div>
+            {isAuthenticated ?
+                <div hidden={!isAuthenticated} className="from-add">
+                    <div>
+                        <Button style={{ marginBottom: "30px" }} variant="secondary" onClick={() => router.push("/")}>
+                            back
                 </Button>
-            </div>
-            <Form>
-                <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label>Title </Form.Label>
-                    <Form.Control defaultValue={statusEdit.title} minLength={1} maxLength={128} name="title" type="title" placeholder="Title" required onChange={handleAddContent} />
-                </Form.Group>
-                <Form.Group controlId="exampleForm.ControlInput2">
-                    <Form.Label>Description </Form.Label>
-                    <Form.Control minLength={1} maxLength={128} defaultValue={statusEdit.description} name="description" type="title" placeholder="Description" required onChange={handleAddContent} />
-                </Form.Group>
-                <Form.Group controlId="exampleForm.ControlTextarea1">
-                    <Form.Label>Content </Form.Label>
-                    <Form.Control minLength={1} maxLength={128} name="content" defaultValue={statusEdit.content} type="title" placeholder="Content" required as="textarea" rows={5} onChange={handleAddContent} />
-                </Form.Group>
-                <Button variant="primary" onClick={onHandleClick}>
-                    Submit
+                    </div>
+                    <Form>
+                        <Form.Group controlId="exampleForm.ControlInput1">
+                            <Form.Label>Title </Form.Label>
+                            <Form.Control defaultValue={statusEdit.title} minLength={1} maxLength={128} name="title" type="title" placeholder="Title" required onChange={handleAddContent} />
+                        </Form.Group>
+                        <Form.Group controlId="exampleForm.ControlInput2">
+                            <Form.Label>Description </Form.Label>
+                            <Form.Control minLength={1} maxLength={128} defaultValue={statusEdit.description} name="description" type="title" placeholder="Description" required onChange={handleAddContent} />
+                        </Form.Group>
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Content </Form.Label>
+                            <Form.Control minLength={1} maxLength={128} name="content" defaultValue={statusEdit.content} type="title" placeholder="Content" required as="textarea" rows={5} onChange={handleAddContent} />
+                        </Form.Group>
+                        <Button variant="primary" onClick={onHandleClick}>
+                            Submit
             </Button>
-            </Form>
-
+                    </Form>
+                </div>
+                :
+                <Comfirm />
+            }
         </div>
     )
 };
